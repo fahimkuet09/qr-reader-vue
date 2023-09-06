@@ -1,0 +1,22 @@
+{
+    "name": "Augmenta Education",
+    "short_name": "Augmenta Education",
+    "description": "A description of your app.",
+    "icons": [
+      {
+        "src": "/192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff"
+  }
+  
