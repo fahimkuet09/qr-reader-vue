@@ -46,9 +46,6 @@ const onDetect = async (detectedCodes) => {
         console.log('API Response:', response.data)
         alert(response.data.message)
         
-
-        // You can also display a success message to the user if needed
-        //alert('Student ID and Batch ID sent to the backend successfully!')
       }
     }
   } catch (error) {
