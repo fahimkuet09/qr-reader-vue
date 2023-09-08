@@ -45,7 +45,8 @@ const onDetect = async (detectedCodes) => {
         // Handle the response from the API as needed
         console.log('API Response:', response.data)
         alert(response.data.message)
-        
+      } else {
+        alert('Please select a batch first')
       }
     }
   } catch (error) {
