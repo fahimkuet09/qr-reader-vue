@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <QrcodeStream @detect="onDetect" />
+  <div class="app-container">
     <label for="batchSelect">Select Batch:</label>
     <select id="batchSelect" v-model="selectedBatchId">
       <option value="">Select a Batch</option>
       <option v-for="batch in batches" :value="batch.id">{{ batch.title }}</option>
     </select>
+
+    <div class="qrcode-section">
+      <QrcodeStream @detect="onDetect" />
+    </div>
   </div>
 </template>
 
@@ -71,5 +74,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Your scoped CSS styles go here */
+.app-container {
+  background-color: whitesmoke; /* Replace #your-color with your desired background color */
+  padding: 20px; /* Add some padding for spacing */
+}
+/* Apply the background color and gap to the qrcode-section */
+.qrcode-section {
+  margin-top: 20px; /* Add a gap between the batch selection and QR code detection */
+}
 </style>

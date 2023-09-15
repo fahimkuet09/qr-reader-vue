@@ -1,13 +1,25 @@
 <template>
   <div class="app-container">
-    <label for="batchSelect">Select Batch:</label>
-    <select id="batchSelect" v-model="selectedBatchId">
-      <option value="">Select a Batch</option>
-      <option v-for="batch in batches" :value="batch.id">{{ batch.title }}</option>
-    </select>
+    <!-- Conditional rendering for login view -->
+    <div v-if="!isLoggedIn" class="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="user name" v-model="username" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="password" v-model="password" />
+      <button @click="login">Login</button>
+    </div>
 
-    <div class="qrcode-section">
-      <QrcodeStream @detect="onDetect" />
+    <!-- Conditional rendering for main content view -->
+    <div v-else>
+      <label for="batchSelect">Select Batch:</label>
+      <select id="batchSelect" v-model="selectedBatchId">
+        <option value="">Select a Batch</option>
+        <option v-for="batch in batches" :value="batch.id">{{ batch.title }}</option>
+      </select>
+
+      <div class="qrcode-section">
+        <QrcodeStream @detect="onDetect" />
+      </div>
     </div>
   </div>
 </template>
@@ -17,12 +29,21 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
 
+const isLoggedIn = ref(false) // Track login status
+const username = ref('')
+const password = ref('')
 const selectedBatchId = ref('')
 const batches = ref([])
 const studentId = ref('')
 let lastStudentId = null // Keep track of the last detected student ID
 
 const onDetect = async (detectedCodes) => {
+  // Check if the user is logged in before processing QR codes
+  if (!isLoggedIn.value) {
+    alert('Please log in first')
+    return
+  }
+
   try {
     const student_id = detectedCodes[0].rawValue
     console.log(student_id)
@@ -57,6 +78,14 @@ const onDetect = async (detectedCodes) => {
   }
 }
 
+const login = async () => {
+  if (username.value === 'admin' && password.value === 'admin') {
+    isLoggedIn.value = true
+  } else {
+    alert('Invalid username or password')
+  }
+}
+
 onMounted(async () => {
   try {
     // Replace 'YOUR_BATCH_API_ENDPOINT' with the actual API endpoint to fetch batches
@@ -75,11 +104,23 @@ onMounted(async () => {
 
 <style scoped>
 .app-container {
-  background-color: whitesmoke; /* Replace #your-color with your desired background color */
-  padding: 20px; /* Add some padding for spacing */
+  background-color: whitesmoke;
+  padding: 20px;
 }
-/* Apply the background color and gap to the qrcode-section */
 .qrcode-section {
-  margin-top: 20px; /* Add a gap between the batch selection and QR code detection */
+  margin-top: 20px;
 }
+.login-form {
+  background-color: rgb(102, 103, 161);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.login-form label,
+.login-form input,
+.login-form button {
+  display: block; /* Make elements display as block (one below the other) */
+  margin-bottom: 10px; /* Add spacing between elements */
+}
+
 </style>
